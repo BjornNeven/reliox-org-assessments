@@ -1,0 +1,451 @@
+{
+  "updatedAt": "2026-02-10T19:16:32.911Z",
+  "createdAt": "2026-02-10T16:02:53.924Z",
+  "id": "hNUJGrRk97yKoAU1",
+  "name": "Assessment Webhook v2",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "assessment",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "assessment"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"name\": \"{{ $json.body.name }}\",\n  \"email\": \"{{ $json.body.email }}\",\n  \"company\": \"{{ $json.body.company }}\",\n  \"job_title\": \"{{ $json.body.job_title || 'Not specified' }}\",\n  \"industry\": \"{{ $json.body.industry || 'Not specified' }}\",\n  \"team_size\": \"{{ $json.body.team_size || 'Not specified' }}\",\n  \"country\": \"{{ $json.body.country || 'Not specified' }}\",\n  \"budget\": \"{{ $json.body.budget || 'Not specified' }}\",\n  \"interests\": {{ JSON.stringify($json.body.interests || []) }},\n  \"total_score\": {{ $json.body.scores?.total || 0 }},\n  \"max_score\": 280,\n  \"percentage\": {{ $json.body.scores?.totalPercentage || Math.round((($json.body.scores?.total || 0) / 280) * 100) }},\n  \"maturity_level\": {{ $json.body.maturity?.level || 1 }},\n  \"maturity_name\": \"{{ $json.body.maturity?.name || 'Unknown' }}\",\n  \"maturity_desc\": \"{{ $json.body.maturity?.description || '' }}\",\n  \"pillar1_score\": {{ $json.body.scores?.pillar1?.score || $json.body.scores?.pillar1 || 0 }},\n  \"pillar1_max\": 60,\n  \"pillar1_pct\": {{ $json.body.scores?.pillar1?.percentage || Math.round((($json.body.scores?.pillar1?.score || $json.body.scores?.pillar1 || 0) / 60) * 100) }},\n  \"pillar2_score\": {{ $json.body.scores?.pillar2?.score || $json.body.scores?.pillar2 || 0 }},\n  \"pillar2_max\": 40,\n  \"pillar2_pct\": {{ $json.body.scores?.pillar2?.percentage || Math.round((($json.body.scores?.pillar2?.score || $json.body.scores?.pillar2 || 0) / 40) * 100) }},\n  \"pillar3_score\": {{ $json.body.scores?.pillar3?.score || $json.body.scores?.pillar3 || 0 }},\n  \"pillar3_max\": 65,\n  \"pillar3_pct\": {{ $json.body.scores?.pillar3?.percentage || Math.round((($json.body.scores?.pillar3?.score || $json.body.scores?.pillar3 || 0) / 65) * 100) }},\n  \"pillar4_score\": {{ $json.body.scores?.pillar4?.score || $json.body.scores?.pillar4 || 0 }},\n  \"pillar4_max\": 45,\n  \"pillar4_pct\": {{ $json.body.scores?.pillar4?.percentage || Math.round((($json.body.scores?.pillar4?.score || $json.body.scores?.pillar4 || 0) / 45) * 100) }},\n  \"pillar5_score\": {{ $json.body.scores?.pillar5?.score || $json.body.scores?.pillar5 || 0 }},\n  \"pillar5_max\": 70,\n  \"pillar5_pct\": {{ $json.body.scores?.pillar5?.percentage || Math.round((($json.body.scores?.pillar5?.score || $json.body.scores?.pillar5 || 0) / 70) * 100) }},\n  \"challenge\": \"{{ ($json.body.challenge || '').replace(/\"/g, \"'\") }}\",\n  \"improvement_goal\": \"{{ ($json.body.improvement_goal || '').replace(/\"/g, \"'\") }}\",\n  \"submitted_at\": \"{{ $json.body.submitted_at || $now.toISO() }}\",\n  \"source\": \"{{ $json.body.source || 'website' }}\",\n  \"version\": \"{{ $json.body.version || '2.0' }}\"\n}",
+        "options": {}
+      },
+      "id": "set-data",
+      "name": "Process Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"success\": true, \"message\": \"Assessment received\", \"maturity\": \"{{ $json.maturity_name }}\", \"score\": {{ $json.total_score }}}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        440,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@reliox.org",
+        "toEmail": "={{ $json.email }}",
+        "subject": "=Your Maintenance Maturity Assessment Results - {{ $json.maturity_name }} ({{ $json.percentage }}%)",
+        "emailType": "html",
+        "html": "=<html><body style=\"font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px; background: #f5f5f5;\">\n<div style=\"background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); padding: 30px; border-radius: 12px 12px 0 0;\">\n<h1 style=\"color: white; margin: 0; font-size: 24px;\">🏭 Maintenance Maturity Assessment</h1>\n<p style=\"color: rgba(255,255,255,0.9); margin: 10px 0 0 0;\">Your comprehensive results from Reliox</p>\n</div>\n<div style=\"background: white; padding: 30px; border: 1px solid #e5e7eb;\">\n<p style=\"font-size: 16px;\">Dear <strong>{{ $json.name }}</strong>,</p>\n<p>Thank you for completing the Reliox Maintenance Maturity Assessment (56 questions). Here are your results:</p>\n<div style=\"background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 25px; border-radius: 12px; margin: 25px 0; text-align: center; border: 2px solid #2563eb;\">\n<h2 style=\"color: #1e3a8a; margin: 0; font-size: 28px;\">{{ $json.maturity_name }}</h2>\n<p style=\"font-size: 52px; font-weight: bold; margin: 15px 0; color: #2563eb;\">{{ $json.total_score }}<span style=\"font-size: 24px; color: #64748b;\">/280</span></p>\n<p style=\"color: #475569; font-size: 18px; margin: 0;\">Overall Score: <strong>{{ $json.percentage }}%</strong></p>\n</div>\n<div style=\"text-align: center; margin: 30px 0;\">\n<h3 style=\"color: #1e3a8a; margin-bottom: 15px;\">📊 Pillar Performance</h3>\n<img src=\"https://quickchart.io/chart?w=420&h=320&c={type:'radar',data:{labels:['Business','Process','Equipment','Organization','Work Mgmt'],datasets:[{label:'Your Score',data:[{{ $json.pillar1_pct }},{{ $json.pillar2_pct }},{{ $json.pillar3_pct }},{{ $json.pillar4_pct }},{{ $json.pillar5_pct }}],backgroundColor:'rgba(37,99,235,0.2)',borderColor:'rgba(37,99,235,1)',pointBackgroundColor:'rgba(37,99,235,1)'},{label:'Industry Avg',data:[52,48,50,45,47],backgroundColor:'rgba(156,163,175,0.1)',borderColor:'rgba(156,163,175,0.5)'}]},options:{scale:{ticks:{beginAtZero:true,max:100}}}}\" alt=\"Radar Chart\" style=\"max-width: 100%; border-radius: 8px;\">\n</div>\n<h3 style=\"color: #1e3a8a; border-bottom: 2px solid #2563eb; padding-bottom: 10px;\">📈 Pillar Scores</h3>\n<table style=\"width: 100%; border-collapse: collapse; margin: 15px 0;\">\n<tr style=\"background: #1e3a8a; color: white;\"><th style=\"padding: 12px; text-align: left;\">Pillar</th><th style=\"padding: 12px; text-align: center;\">Score</th><th style=\"padding: 12px; text-align: center;\">%</th></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>1. Business & Management</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar1_score }}/60</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar1_pct }}%</td></tr>\n<tr style=\"background: #f9fafb;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>2. Process Reliability</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar2_score }}/40</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar2_pct }}%</td></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>3. Equipment Reliability</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar3_score }}/65</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar3_pct }}%</td></tr>\n<tr style=\"background: #f9fafb;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>4. Organization & Leadership</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar4_score }}/45</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar4_pct }}%</td></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px;\"><strong>5. Work Management</strong></td><td style=\"padding: 12px; text-align: center;\">{{ $json.pillar5_score }}/70</td><td style=\"padding: 12px; text-align: center;\">{{ $json.pillar5_pct }}%</td></tr>\n</table>\n<div style=\"background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;\">\n<h4 style=\"margin: 0 0 10px 0; color: #065f46;\">💡 What's Next?</h4>\n<p style=\"margin: 0; color: #047857;\">Your organization is at the <strong>{{ $json.maturity_name }}</strong> level. Our experts can help you develop a customized improvement roadmap.</p>\n</div>\n<div style=\"text-align: center; margin: 30px 0;\">\n<a href=\"https://reliox.ai/contact\" style=\"background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;\">Schedule Free Consultation</a>\n</div>\n</div>\n<div style=\"background: #1e3a8a; color: white; padding: 20px; border-radius: 0 0 12px 12px; text-align: center;\">\n<p style=\"margin: 0; font-weight: bold;\">Reliox - Elevating Maintenance Excellence</p>\n<p style=\"margin: 5px 0 0 0; font-size: 12px; color: #93c5fd;\">© 2026 Reliox | reliox.org | reliox.ai</p>\n</div>\n</body></html>",
+        "options": {}
+      },
+      "id": "email-respondent",
+      "name": "Email to Respondent",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@reliox.org",
+        "toEmail": "admin@reliox.org",
+        "subject": "=🆕 Assessment: {{ $json.company }} - {{ $json.maturity_name }} ({{ $json.percentage }}%)",
+        "emailType": "html",
+        "html": "=<html><body style=\"font-family: Arial, sans-serif; padding: 20px;\"><h2>New Assessment Submission</h2><table style=\"border-collapse: collapse; width: 100%;\"><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Name</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.name }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Email</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.email }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Company</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.company }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Job Title</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.job_title }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Industry</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.industry }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Country</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.country }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Team Size</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.team_size }}</td></tr></table><h3>Scores (v2 - 56 questions)</h3><table style=\"border-collapse: collapse; width: 100%;\"><tr style=\"background: #1e3a8a; color: white;\"><th style=\"padding: 8px;\">Metric</th><th style=\"padding: 8px;\">Value</th></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Total Score</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.total_score }}/280 ({{ $json.percentage }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Maturity Level</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.maturity_name }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P1: Business & Management</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar1_score }}/60 ({{ $json.pillar1_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P2: Process Reliability</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar2_score }}/40 ({{ $json.pillar2_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P3: Equipment Reliability</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar3_score }}/65 ({{ $json.pillar3_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P4: Organization & Leadership</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar4_score }}/45 ({{ $json.pillar4_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P5: Work Management</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar5_score }}/70 ({{ $json.pillar5_pct }}%)</td></tr></table><h3>Open Questions</h3><p><strong>Challenge:</strong> {{ $json.challenge || 'Not provided' }}</p><p><strong>Improvement Goal:</strong> {{ $json.improvement_goal || 'Not provided' }}</p><p><strong>Interests:</strong> {{ $json.interests.join(', ') || 'None selected' }}</p><hr><p><small>Submitted: {{ $json.submitted_at }} | Source: {{ $json.source }} | Version: {{ $json.version }}</small></p></body></html>",
+        "options": {}
+      },
+      "id": "email-bjorn",
+      "name": "Notify Bjorn",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "YOUR_SUPABASE_URL/rest/v1/assessments",
+        "authentication": {},
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_SUPABASE_SERVICE_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"name\": \"{{ $json.name }}\", \"email\": \"{{ $json.email }}\", \"company\": \"{{ $json.company }}\", \"job_title\": \"{{ $json.job_title }}\", \"industry\": \"{{ $json.industry }}\", \"country\": \"{{ $json.country }}\", \"team_size\": \"{{ $json.team_size }}\", \"total_score\": {{ $json.total_score }}, \"percentage\": {{ $json.percentage }}, \"maturity_level\": {{ $json.maturity_level }}, \"maturity_name\": \"{{ $json.maturity_name }}\", \"pillar1_score\": {{ $json.pillar1_score }}, \"pillar2_score\": {{ $json.pillar2_score }}, \"pillar3_score\": {{ $json.pillar3_score }}, \"pillar4_score\": {{ $json.pillar4_score }}, \"pillar5_score\": {{ $json.pillar5_score }}, \"challenge\": \"{{ $json.challenge }}\", \"improvement_goal\": \"{{ $json.improvement_goal }}\", \"interests\": \"{{ $json.interests }}\", \"source\": \"{{ $json.source }}\", \"version\": \"{{ $json.version }}\"}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "id": "http-supabase",
+      "name": "Save to Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Process Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Data": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email to Respondent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Bjorn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Save to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": null,
+  "versionId": "e5e0eab6-2cef-4278-b9c4-4cf8d59b4098",
+  "activeVersionId": "e5e0eab6-2cef-4278-b9c4-4cf8d59b4098",
+  "versionCounter": 27,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-10T16:02:53.934Z",
+      "createdAt": "2026-02-10T16:02:53.934Z",
+      "role": "workflow:owner",
+      "workflowId": "hNUJGrRk97yKoAU1",
+      "projectId": "NJH8OLm914QatrbM",
+      "project": {
+        "updatedAt": "2025-09-18T19:28:32.516Z",
+        "createdAt": "2025-09-18T19:23:34.928Z",
+        "id": "NJH8OLm914QatrbM",
+        "name": "Bjorn Neven <bjorn.neven@care4maintenance.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "c72eb455-da25-4960-8baa-28d0597a5d87",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-09-18T19:23:34.928Z",
+            "createdAt": "2025-09-18T19:23:34.928Z",
+            "userId": "c72eb455-da25-4960-8baa-28d0597a5d87",
+            "projectId": "NJH8OLm914QatrbM",
+            "user": {
+              "updatedAt": "2026-02-10T15:55:26.000Z",
+              "createdAt": "2025-09-18T19:23:34.357Z",
+              "id": "c72eb455-da25-4960-8baa-28d0597a5d87",
+              "email": "bjorn.neven@care4maintenance.com",
+              "firstName": "Bjorn",
+              "lastName": "Neven",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-09-18T19:28:42.760Z",
+                "personalization_survey_n8n_version": "1.111.0"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "YAsn8oxvCSQ25ga6",
+                "userActivatedAt": 1759868130633,
+                "dismissedCallouts": {
+                  "aiAgentStarterCallout": true
+                },
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1760353451165
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-10",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-10T19:16:32.912Z",
+    "createdAt": "2026-02-10T19:16:32.912Z",
+    "versionId": "e5e0eab6-2cef-4278-b9c4-4cf8d59b4098",
+    "workflowId": "hNUJGrRk97yKoAU1",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "assessment",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "webhook",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "assessment"
+      },
+      {
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={\n  \"name\": \"{{ $json.body.name }}\",\n  \"email\": \"{{ $json.body.email }}\",\n  \"company\": \"{{ $json.body.company }}\",\n  \"job_title\": \"{{ $json.body.job_title || 'Not specified' }}\",\n  \"industry\": \"{{ $json.body.industry || 'Not specified' }}\",\n  \"team_size\": \"{{ $json.body.team_size || 'Not specified' }}\",\n  \"country\": \"{{ $json.body.country || 'Not specified' }}\",\n  \"budget\": \"{{ $json.body.budget || 'Not specified' }}\",\n  \"interests\": {{ JSON.stringify($json.body.interests || []) }},\n  \"total_score\": {{ $json.body.scores?.total || 0 }},\n  \"max_score\": 280,\n  \"percentage\": {{ $json.body.scores?.totalPercentage || Math.round((($json.body.scores?.total || 0) / 280) * 100) }},\n  \"maturity_level\": {{ $json.body.maturity?.level || 1 }},\n  \"maturity_name\": \"{{ $json.body.maturity?.name || 'Unknown' }}\",\n  \"maturity_desc\": \"{{ $json.body.maturity?.description || '' }}\",\n  \"pillar1_score\": {{ $json.body.scores?.pillar1?.score || $json.body.scores?.pillar1 || 0 }},\n  \"pillar1_max\": 60,\n  \"pillar1_pct\": {{ $json.body.scores?.pillar1?.percentage || Math.round((($json.body.scores?.pillar1?.score || $json.body.scores?.pillar1 || 0) / 60) * 100) }},\n  \"pillar2_score\": {{ $json.body.scores?.pillar2?.score || $json.body.scores?.pillar2 || 0 }},\n  \"pillar2_max\": 40,\n  \"pillar2_pct\": {{ $json.body.scores?.pillar2?.percentage || Math.round((($json.body.scores?.pillar2?.score || $json.body.scores?.pillar2 || 0) / 40) * 100) }},\n  \"pillar3_score\": {{ $json.body.scores?.pillar3?.score || $json.body.scores?.pillar3 || 0 }},\n  \"pillar3_max\": 65,\n  \"pillar3_pct\": {{ $json.body.scores?.pillar3?.percentage || Math.round((($json.body.scores?.pillar3?.score || $json.body.scores?.pillar3 || 0) / 65) * 100) }},\n  \"pillar4_score\": {{ $json.body.scores?.pillar4?.score || $json.body.scores?.pillar4 || 0 }},\n  \"pillar4_max\": 45,\n  \"pillar4_pct\": {{ $json.body.scores?.pillar4?.percentage || Math.round((($json.body.scores?.pillar4?.score || $json.body.scores?.pillar4 || 0) / 45) * 100) }},\n  \"pillar5_score\": {{ $json.body.scores?.pillar5?.score || $json.body.scores?.pillar5 || 0 }},\n  \"pillar5_max\": 70,\n  \"pillar5_pct\": {{ $json.body.scores?.pillar5?.percentage || Math.round((($json.body.scores?.pillar5?.score || $json.body.scores?.pillar5 || 0) / 70) * 100) }},\n  \"challenge\": \"{{ ($json.body.challenge || '').replace(/\"/g, \"'\") }}\",\n  \"improvement_goal\": \"{{ ($json.body.improvement_goal || '').replace(/\"/g, \"'\") }}\",\n  \"submitted_at\": \"{{ $json.body.submitted_at || $now.toISO() }}\",\n  \"source\": \"{{ $json.body.source || 'website' }}\",\n  \"version\": \"{{ $json.body.version || '2.0' }}\"\n}",
+          "options": {}
+        },
+        "id": "set-data",
+        "name": "Process Data",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          220,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={\"success\": true, \"message\": \"Assessment received\", \"maturity\": \"{{ $json.maturity_name }}\", \"score\": {{ $json.total_score }}}",
+          "options": {}
+        },
+        "id": "respond",
+        "name": "Respond Success",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [
+          440,
+          -100
+        ]
+      },
+      {
+        "parameters": {
+          "fromEmail": "admin@reliox.org",
+          "toEmail": "={{ $json.email }}",
+          "subject": "Your Maintenance Maturity Assessment Results - {{ $json.maturity_name }} ({{ $json.percentage }}%)",
+          "emailType": "html",
+          "html": "=<html><body style=\"font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px; background: #f5f5f5;\">\n<div style=\"background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); padding: 30px; border-radius: 12px 12px 0 0;\">\n<h1 style=\"color: white; margin: 0; font-size: 24px;\">🏭 Maintenance Maturity Assessment</h1>\n<p style=\"color: rgba(255,255,255,0.9); margin: 10px 0 0 0;\">Your comprehensive results from Reliox</p>\n</div>\n<div style=\"background: white; padding: 30px; border: 1px solid #e5e7eb;\">\n<p style=\"font-size: 16px;\">Dear <strong>{{ $json.name }}</strong>,</p>\n<p>Thank you for completing the Reliox Maintenance Maturity Assessment (56 questions). Here are your results:</p>\n<div style=\"background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 25px; border-radius: 12px; margin: 25px 0; text-align: center; border: 2px solid #2563eb;\">\n<h2 style=\"color: #1e3a8a; margin: 0; font-size: 28px;\">{{ $json.maturity_name }}</h2>\n<p style=\"font-size: 52px; font-weight: bold; margin: 15px 0; color: #2563eb;\">{{ $json.total_score }}<span style=\"font-size: 24px; color: #64748b;\">/280</span></p>\n<p style=\"color: #475569; font-size: 18px; margin: 0;\">Overall Score: <strong>{{ $json.percentage }}%</strong></p>\n</div>\n<div style=\"text-align: center; margin: 30px 0;\">\n<h3 style=\"color: #1e3a8a; margin-bottom: 15px;\">📊 Pillar Performance</h3>\n<img src=\"https://quickchart.io/chart?w=420&h=320&c={type:'radar',data:{labels:['Business','Process','Equipment','Organization','Work Mgmt'],datasets:[{label:'Your Score',data:[{{ $json.pillar1_pct }},{{ $json.pillar2_pct }},{{ $json.pillar3_pct }},{{ $json.pillar4_pct }},{{ $json.pillar5_pct }}],backgroundColor:'rgba(37,99,235,0.2)',borderColor:'rgba(37,99,235,1)',pointBackgroundColor:'rgba(37,99,235,1)'},{label:'Industry Avg',data:[52,48,50,45,47],backgroundColor:'rgba(156,163,175,0.1)',borderColor:'rgba(156,163,175,0.5)'}]},options:{scale:{ticks:{beginAtZero:true,max:100}}}}\" alt=\"Radar Chart\" style=\"max-width: 100%; border-radius: 8px;\">\n</div>\n<h3 style=\"color: #1e3a8a; border-bottom: 2px solid #2563eb; padding-bottom: 10px;\">📈 Pillar Scores</h3>\n<table style=\"width: 100%; border-collapse: collapse; margin: 15px 0;\">\n<tr style=\"background: #1e3a8a; color: white;\"><th style=\"padding: 12px; text-align: left;\">Pillar</th><th style=\"padding: 12px; text-align: center;\">Score</th><th style=\"padding: 12px; text-align: center;\">%</th></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>1. Business & Management</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar1_score }}/60</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar1_pct }}%</td></tr>\n<tr style=\"background: #f9fafb;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>2. Process Reliability</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar2_score }}/40</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar2_pct }}%</td></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>3. Equipment Reliability</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar3_score }}/65</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar3_pct }}%</td></tr>\n<tr style=\"background: #f9fafb;\"><td style=\"padding: 12px; border-bottom: 1px solid #e5e7eb;\"><strong>4. Organization & Leadership</strong></td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar4_score }}/45</td><td style=\"padding: 12px; text-align: center; border-bottom: 1px solid #e5e7eb;\">{{ $json.pillar4_pct }}%</td></tr>\n<tr style=\"background: white;\"><td style=\"padding: 12px;\"><strong>5. Work Management</strong></td><td style=\"padding: 12px; text-align: center;\">{{ $json.pillar5_score }}/70</td><td style=\"padding: 12px; text-align: center;\">{{ $json.pillar5_pct }}%</td></tr>\n</table>\n<div style=\"background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981;\">\n<h4 style=\"margin: 0 0 10px 0; color: #065f46;\">💡 What's Next?</h4>\n<p style=\"margin: 0; color: #047857;\">Your organization is at the <strong>{{ $json.maturity_name }}</strong> level. Our experts can help you develop a customized improvement roadmap.</p>\n</div>\n<div style=\"text-align: center; margin: 30px 0;\">\n<a href=\"https://reliox.ai/contact\" style=\"background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;\">Schedule Free Consultation</a>\n</div>\n</div>\n<div style=\"background: #1e3a8a; color: white; padding: 20px; border-radius: 0 0 12px 12px; text-align: center;\">\n<p style=\"margin: 0; font-weight: bold;\">Reliox - Elevating Maintenance Excellence</p>\n<p style=\"margin: 5px 0 0 0; font-size: 12px; color: #93c5fd;\">© 2026 Reliox | reliox.org | reliox.ai</p>\n</div>\n</body></html>",
+          "options": {}
+        },
+        "id": "email-respondent",
+        "name": "Email to Respondent",
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          440,
+          0
+        ],
+        "credentials": {
+          "smtp": {
+            "id": "PvGxmVe06lusxonC",
+            "name": "Reliox SMTP"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fromEmail": "admin@reliox.org",
+          "toEmail": "bjorn@reliox.ai",
+          "subject": "🆕 Assessment: {{ $json.company }} - {{ $json.maturity_name }} ({{ $json.percentage }}%)",
+          "emailType": "html",
+          "html": "=<html><body style=\"font-family: Arial, sans-serif; padding: 20px;\"><h2>New Assessment Submission</h2><table style=\"border-collapse: collapse; width: 100%;\"><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Name</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.name }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Email</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.email }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Company</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.company }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Job Title</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.job_title }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Industry</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.industry }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Country</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.country }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Team Size</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.team_size }}</td></tr></table><h3>Scores (v2 - 56 questions)</h3><table style=\"border-collapse: collapse; width: 100%;\"><tr style=\"background: #1e3a8a; color: white;\"><th style=\"padding: 8px;\">Metric</th><th style=\"padding: 8px;\">Value</th></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Total Score</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.total_score }}/280 ({{ $json.percentage }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\"><strong>Maturity Level</strong></td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.maturity_name }}</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P1: Business & Management</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar1_score }}/60 ({{ $json.pillar1_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P2: Process Reliability</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar2_score }}/40 ({{ $json.pillar2_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P3: Equipment Reliability</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar3_score }}/65 ({{ $json.pillar3_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P4: Organization & Leadership</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar4_score }}/45 ({{ $json.pillar4_pct }}%)</td></tr><tr><td style=\"padding: 8px; border: 1px solid #ddd;\">P5: Work Management</td><td style=\"padding: 8px; border: 1px solid #ddd;\">{{ $json.pillar5_score }}/70 ({{ $json.pillar5_pct }}%)</td></tr></table><h3>Open Questions</h3><p><strong>Challenge:</strong> {{ $json.challenge || 'Not provided' }}</p><p><strong>Improvement Goal:</strong> {{ $json.improvement_goal || 'Not provided' }}</p><p><strong>Interests:</strong> {{ $json.interests.join(', ') || 'None selected' }}</p><hr><p><small>Submitted: {{ $json.submitted_at }} | Source: {{ $json.source }} | Version: {{ $json.version }}</small></p></body></html>",
+          "options": {}
+        },
+        "id": "email-bjorn",
+        "name": "Notify Bjorn",
+        "type": "n8n-nodes-base.emailSend",
+        "typeVersion": 2.1,
+        "position": [
+          440,
+          120
+        ],
+        "credentials": {
+          "smtp": {
+            "id": "PvGxmVe06lusxonC",
+            "name": "Reliox SMTP"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://YOUR_SUPABASE_PROJECT.supabase.co/rest/v1/assessments",
+          "authentication": "none",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "apikey",
+                "value": "YOUR_SUPABASE_SERVICE_KEY"
+              },
+              {
+                "name": "Authorization",
+                "value": "Bearer YOUR_SUPABASE_SERVICE_KEY"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "Prefer",
+                "value": "return=minimal"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\"name\": \"{{ $json.name }}\", \"email\": \"{{ $json.email }}\", \"company\": \"{{ $json.company }}\", \"job_title\": \"{{ $json.job_title }}\", \"industry\": \"{{ $json.industry }}\", \"country\": \"{{ $json.country }}\", \"team_size\": \"{{ $json.team_size }}\", \"total_score\": {{ $json.total_score }}, \"percentage\": {{ $json.percentage }}, \"maturity_level\": {{ $json.maturity_level }}, \"maturity_name\": \"{{ $json.maturity_name }}\", \"pillar1_score\": {{ $json.pillar1_score }}, \"pillar2_score\": {{ $json.pillar2_score }}, \"pillar3_score\": {{ $json.pillar3_score }}, \"pillar4_score\": {{ $json.pillar4_score }}, \"pillar5_score\": {{ $json.pillar5_score }}, \"challenge\": \"{{ $json.challenge }}\", \"improvement_goal\": \"{{ $json.improvement_goal }}\", \"interests\": \"{{ $json.interests }}\", \"source\": \"{{ $json.source }}\", \"version\": \"{{ $json.version }}\"}",
+          "options": {
+            "response": {
+              "response": {
+                "neverError": true
+              }
+            }
+          }
+        },
+        "id": "http-supabase",
+        "name": "Save to Supabase",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          440,
+          240
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Process Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Process Data": {
+        "main": [
+          [
+            {
+              "node": "Respond Success",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Email to Respondent",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Notify Bjorn",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Save to Supabase",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Bjorn Neven",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-10T19:16:32.955Z",
+        "id": 12,
+        "workflowId": "hNUJGrRk97yKoAU1",
+        "versionId": "e5e0eab6-2cef-4278-b9c4-4cf8d59b4098",
+        "event": "activated",
+        "userId": "c72eb455-da25-4960-8baa-28d0597a5d87"
+      }
+    ]
+  }
+}

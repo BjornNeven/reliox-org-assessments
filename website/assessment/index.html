@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Maturity Assessment | Reliox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        reliox: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .step { display: none; }
+        .step.active { display: block; }
+        input[type="radio"]:checked + label { border-color: #2563eb; background-color: #eff6ff; }
+        input[type="radio"]:checked + label .check-circle { background-color: #2563eb; }
+        .subcategory-header { 
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #2563eb;
+        }
+        .pillar-intro {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-reliox-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">R</span>
+                </div>
+                <span class="font-semibold text-gray-900">Reliox</span>
+            </div>
+            <span class="text-sm text-gray-500">Maintenance Maturity Assessment</span>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="bg-white border-b border-gray-200 sticky top-[65px] z-10">
+        <div class="max-w-4xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-2">
+                <span>Progress</span>
+                <span id="progress-text">Step 1 of 9</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="progress-bar" class="bg-reliox-500 h-2 rounded-full transition-all duration-300" style="width: 11%"></div>
+            </div>
+            <!-- Pillar indicators -->
+            <div class="flex justify-between mt-2 text-xs text-gray-400">
+                <span id="pillar-indicator"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Form -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <form id="assessment-form">
+            
+            <!-- Step 1: Welcome -->
+            <div class="step active fade-in" data-step="1">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">Maintenance Maturity Assessment</h1>
+                    <p class="text-lg text-gray-600 mb-6">
+                        Welcome to the comprehensive Reliox Maintenance Maturity Assessment. This assessment maps your maintenance organization's maturity across <strong>5 pillars</strong> and <strong>21 capability areas</strong> in <strong>15-20 minutes</strong>.
+                    </p>
+                    <div class="bg-reliox-50 rounded-lg p-6 mb-6">
+                        <h3 class="font-semibold text-reliox-700 mb-3">Based on internationally recognized frameworks:</h3>
+                        <ul class="space-y-2 text-gray-700 mb-4">
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">📋</span> <strong>SMRP 5-Pillar Framework</strong> (Society for Maintenance & Reliability Professionals)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">🏛️</span> <strong>IAM Asset Management</strong> (ISO 55001 aligned)
+                            </li>
+                        </ul>
+                        <h3 class="font-semibold text-reliox-700 mb-3">After completion you will receive:</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">📊</span> Detailed maturity score per pillar and subcategory
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">📈</span> Benchmark comparison with industry peers
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">🎯</span> Prioritized improvement roadmap
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-reliox-500">📄</span> Comprehensive PDF report via email
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-medium text-gray-700 mb-2">Assessment Structure (56 questions):</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                            <div>📌 Pillar 1: Business & Management (12 q)</div>
+                            <div>📌 Pillar 2: Process Reliability (8 q)</div>
+                            <div>📌 Pillar 3: Equipment Reliability (13 q)</div>
+                            <div>📌 Pillar 4: Organization & Leadership (9 q)</div>
+                            <div>📌 Pillar 5: Work Management (14 q)</div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">
+                        <strong>All answers are confidential.</strong> Your data is processed securely and never shared with third parties.
+                    </p>
+                    <button type="button" onclick="nextStep()" class="w-full bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                        Start Assessment →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Company Info -->
+            <div class="step fade-in" data-step="2">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Company Information</h2>
+                    <p class="text-gray-600 mb-6">Tell us about your organization so we can benchmark your results.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                                <input type="text" name="name" required placeholder="John Smith" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                <input type="email" name="email" required placeholder="john@company.com" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+                                <input type="text" name="company" required placeholder="ACME Industries" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                                <input type="text" name="job_title" placeholder="Maintenance Manager" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Industry *</label>
+                                <select name="industry" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                                    <option value="">Select industry...</option>
+                                    <option value="oil_gas">Oil & Gas</option>
+                                    <option value="petrochemical">Petrochemical</option>
+                                    <option value="power">Power Generation</option>
+                                    <option value="mining">Mining & Minerals</option>
+                                    <option value="manufacturing_discrete">Manufacturing - Discrete</option>
+                                    <option value="manufacturing_process">Manufacturing - Process</option>
+                                    <option value="food">Food & Beverage</option>
+                                    <option value="pharma">Pharmaceutical</option>
+                                    <option value="utilities">Utilities (Water/Waste)</option>
+                                    <option value="transportation">Transportation</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+                                <select name="country" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                                    <option value="">Select country...</option>
+                                    <option value="AE">United Arab Emirates</option>
+                                    <option value="SA">Saudi Arabia</option>
+                                    <option value="QA">Qatar</option>
+                                    <option value="KW">Kuwait</option>
+                                    <option value="OM">Oman</option>
+                                    <option value="BH">Bahrain</option>
+                                    <option value="NL">Netherlands</option>
+                                    <option value="BE">Belgium</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="US">United States</option>
+                                    <option value="UK">United Kingdom</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Maintenance Team Size *</label>
+                                <select name="team_size" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                                    <option value="">Select team size...</option>
+                                    <option value="1-10">1-10</option>
+                                    <option value="11-25">11-25</option>
+                                    <option value="26-50">26-50</option>
+                                    <option value="51-100">51-100</option>
+                                    <option value="101-250">101-250</option>
+                                    <option value="250+">250+</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Annual Maintenance Budget</label>
+                                <select name="budget" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500">
+                                    <option value="">Prefer not to say</option>
+                                    <option value="<1M">< $1 million</option>
+                                    <option value="1-5M">$1 - 5 million</option>
+                                    <option value="5-20M">$5 - 20 million</option>
+                                    <option value="20-50M">$20 - 50 million</option>
+                                    <option value=">50M">> $50 million</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Pillar 1 - Business & Management (12 questions) -->
+            <div class="step fade-in" data-step="3">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <!-- Pillar Header -->
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-reliox-100 text-reliox-700 px-3 py-1 rounded-full text-sm font-medium">Pillar 1 of 5</span>
+                        <span class="text-gray-400 text-sm">12 questions</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Business & Management</h2>
+                    
+                    <!-- Pillar Introduction -->
+                    <div class="pillar-intro rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 text-sm">
+                            <strong>Mission:</strong> Anchoring maintenance as a strategic business function that creates and protects value. This pillar assesses how maintenance is integrated into business strategy, how resources are allocated, and whether the organization understands the true value of asset management.
+                        </p>
+                    </div>
+
+                    <!-- 1.1 Strategy & Alignment -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-reliox-700">1.1 Strategy & Alignment</h3>
+                        <p class="text-sm text-gray-600">Evaluates whether an explicit maintenance strategy exists and aligns with business objectives.</p>
+                    </div>
+
+                    <!-- Q1 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">1. Is there a documented maintenance/asset management strategy?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q1" value="1" id="q1_1" class="sr-only peer" required><label for="q1_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No strategy, ad-hoc decisions</span></label></div>
+                            <div><input type="radio" name="q1" value="2" id="q1_2" class="sr-only peer"><label for="q1_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal strategy, not documented</span></label></div>
+                            <div><input type="radio" name="q1" value="3" id="q1_3" class="sr-only peer"><label for="q1_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Documented strategy, limited sharing</span></label></div>
+                            <div><input type="radio" name="q1" value="4" id="q1_4" class="sr-only peer"><label for="q1_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Strategy aligned with business goals, broadly communicated</span></label></div>
+                            <div><input type="radio" name="q1" value="5" id="q1_5" class="sr-only peer"><label for="q1_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Strategy regularly reviewed, fully integrated with business planning</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">2. How is maintenance involved in strategic business decisions?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q2" value="1" id="q2_1" class="sr-only peer" required><label for="q2_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Not involved at all</span></label></div>
+                            <div><input type="radio" name="q2" value="2" id="q2_2" class="sr-only peer"><label for="q2_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informed afterwards</span></label></div>
+                            <div><input type="radio" name="q2" value="3" id="q2_3" class="sr-only peer"><label for="q2_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Consulted on major projects</span></label></div>
+                            <div><input type="radio" name="q2" value="4" id="q2_4" class="sr-only peer"><label for="q2_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Actively involved in CAPEX/asset decisions</span></label></div>
+                            <div><input type="radio" name="q2" value="5" id="q2_5" class="sr-only peer"><label for="q2_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Maintenance leadership represented at executive level</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 1.2 Budgeting & Costs -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">1.2 Budgeting & Costs</h3>
+                        <p class="text-sm text-gray-600">Evaluates how maintenance budgets are determined, monitored, and analyzed.</p>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">3. How is the maintenance budget determined?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q3" value="1" id="q3_1" class="sr-only peer" required><label for="q3_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Historical -X% (arbitrary cuts)</span></label></div>
+                            <div><input type="radio" name="q3" value="2" id="q3_2" class="sr-only peer"><label for="q3_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Historical baseline with minimal justification</span></label></div>
+                            <div><input type="radio" name="q3" value="3" id="q3_3" class="sr-only peer"><label for="q3_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Activity-based budgeting for major items</span></label></div>
+                            <div><input type="radio" name="q3" value="4" id="q3_4" class="sr-only peer"><label for="q3_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Zero-based on asset criticality and condition</span></label></div>
+                            <div><input type="radio" name="q3" value="5" id="q3_5" class="sr-only peer"><label for="q3_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Life-cycle cost optimization, TCO modeling</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">4. Is maintenance seen as a cost center or value driver?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q4" value="1" id="q4_1" class="sr-only peer" required><label for="q4_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Pure cost center, first to be cut</span></label></div>
+                            <div><input type="radio" name="q4" value="2" id="q4_2" class="sr-only peer"><label for="q4_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Necessary cost, grudging acceptance</span></label></div>
+                            <div><input type="radio" name="q4" value="3" id="q4_3" class="sr-only peer"><label for="q4_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Mix of cost and value perspective</span></label></div>
+                            <div><input type="radio" name="q4" value="4" id="q4_4" class="sr-only peer"><label for="q4_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Recognized as value driver for availability</span></label></div>
+                            <div><input type="radio" name="q4" value="5" id="q4_5" class="sr-only peer"><label for="q4_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Strategic partner, maintenance ROI is measured</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">5. How are maintenance costs reported and analyzed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q5" value="1" id="q5_1" class="sr-only peer" required><label for="q5_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Total cost only, no breakdown</span></label></div>
+                            <div><input type="radio" name="q5" value="2" id="q5_2" class="sr-only peer"><label for="q5_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic cost categories (labor, materials)</span></label></div>
+                            <div><input type="radio" name="q5" value="3" id="q5_3" class="sr-only peer"><label for="q5_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Cost per asset/area, monthly reporting</span></label></div>
+                            <div><input type="radio" name="q5" value="4" id="q5_4" class="sr-only peer"><label for="q5_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Work type breakdown, variance analysis</span></label></div>
+                            <div><input type="radio" name="q5" value="5" id="q5_5" class="sr-only peer"><label for="q5_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Total cost of ownership, predictive cost modeling</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 1.3 KPIs & Reporting -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">1.3 KPIs & Reporting</h3>
+                        <p class="text-sm text-gray-600">Measures whether the right performance indicators are tracked and communicated.</p>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">6. Are maintenance KPIs systematically measured?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q6" value="1" id="q6_1" class="sr-only peer" required><label for="q6_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No KPIs defined</span></label></div>
+                            <div><input type="radio" name="q6" value="2" id="q6_2" class="sr-only peer"><label for="q6_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic KPIs (costs, headcount)</span></label></div>
+                            <div><input type="radio" name="q6" value="3" id="q6_3" class="sr-only peer"><label for="q6_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Operational KPIs (MTBF, MTTR, availability)</span></label></div>
+                            <div><input type="radio" name="q6" value="4" id="q6_4" class="sr-only peer"><label for="q6_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Balanced scorecard with targets and trends</span></label></div>
+                            <div><input type="radio" name="q6" value="5" id="q6_5" class="sr-only peer"><label for="q6_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Real-time dashboards, predictive analytics, benchmarking</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">7. How often is maintenance performance discussed with senior management?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q7" value="1" id="q7_1" class="sr-only peer" required><label for="q7_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Never or only during crises</span></label></div>
+                            <div><input type="radio" name="q7" value="2" id="q7_2" class="sr-only peer"><label for="q7_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Annually (budget review)</span></label></div>
+                            <div><input type="radio" name="q7" value="3" id="q7_3" class="sr-only peer"><label for="q7_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Quarterly business reviews</span></label></div>
+                            <div><input type="radio" name="q7" value="4" id="q7_4" class="sr-only peer"><label for="q7_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Monthly management meetings</span></label></div>
+                            <div><input type="radio" name="q7" value="5" id="q7_5" class="sr-only peer"><label for="q7_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Weekly operational reviews, real-time visibility</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 1.4 Risk Management -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">1.4 Risk Management</h3>
+                        <p class="text-sm text-gray-600">Assesses systematic approach to asset criticality and compliance management.</p>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">8. Is there a systematic approach to asset criticality?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q8" value="1" id="q8_1" class="sr-only peer" required><label for="q8_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, all assets treated equally</span></label></div>
+                            <div><input type="radio" name="q8" value="2" id="q8_2" class="sr-only peer"><label for="q8_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal "everyone knows what's important"</span></label></div>
+                            <div><input type="radio" name="q8" value="3" id="q8_3" class="sr-only peer"><label for="q8_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Criticality ranking exists, inconsistently applied</span></label></div>
+                            <div><input type="radio" name="q8" value="4" id="q8_4" class="sr-only peer"><label for="q8_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Formal criticality matrix drives maintenance strategy</span></label></div>
+                            <div><input type="radio" name="q8" value="5" id="q8_5" class="sr-only peer"><label for="q8_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Risk-based asset management, regularly reviewed with business</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">9. How is compliance and regulatory adherence managed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q9" value="1" id="q9_1" class="sr-only peer" required><label for="q9_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Reactive, address when audited</span></label></div>
+                            <div><input type="radio" name="q9" value="2" id="q9_2" class="sr-only peer"><label for="q9_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic awareness, manual tracking</span></label></div>
+                            <div><input type="radio" name="q9" value="3" id="q9_3" class="sr-only peer"><label for="q9_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Compliance calendar, scheduled inspections</span></label></div>
+                            <div><input type="radio" name="q9" value="4" id="q9_4" class="sr-only peer"><label for="q9_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Integrated compliance system, proactive monitoring</span></label></div>
+                            <div><input type="radio" name="q9" value="5" id="q9_5" class="sr-only peer"><label for="q9_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Exceeds compliance, benchmarks against standards</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 1.5 Workforce & Continuous Improvement -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">1.5 Workforce & Continuous Improvement</h3>
+                        <p class="text-sm text-gray-600">Evaluates investments in human capital and long-term asset planning.</p>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">10. How is investment in maintenance competency development?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q10" value="1" id="q10_1" class="sr-only peer" required><label for="q10_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No training budget</span></label></div>
+                            <div><input type="radio" name="q10" value="2" id="q10_2" class="sr-only peer"><label for="q10_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Minimal, mandatory training only</span></label></div>
+                            <div><input type="radio" name="q10" value="3" id="q10_3" class="sr-only peer"><label for="q10_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Annual training plan exists</span></label></div>
+                            <div><input type="radio" name="q10" value="4" id="q10_4" class="sr-only peer"><label for="q10_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Structured development program, skill gap analysis</span></label></div>
+                            <div><input type="radio" name="q10" value="5" id="q10_5" class="sr-only peer"><label for="q10_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Learning organization, certifications, career paths</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q11 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">11. Is there a long-term asset replacement plan (Capital Plan)?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q11" value="1" id="q11_1" class="sr-only peer" required><label for="q11_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No plan, replace when failed</span></label></div>
+                            <div><input type="radio" name="q11" value="2" id="q11_2" class="sr-only peer"><label for="q11_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal awareness of aging assets</span></label></div>
+                            <div><input type="radio" name="q11" value="3" id="q11_3" class="sr-only peer"><label for="q11_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>5-year plan for major assets</span></label></div>
+                            <div><input type="radio" name="q11" value="4" id="q11_4" class="sr-only peer"><label for="q11_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Comprehensive plan based on condition and criticality</span></label></div>
+                            <div><input type="radio" name="q11" value="5" id="q11_5" class="sr-only peer"><label for="q11_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>10-20 year integrated plan, linked to business strategy</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q12 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">12. Is cost savings/avoidance through maintenance actively tracked?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q12" value="1" id="q12_1" class="sr-only peer" required><label for="q12_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, maintenance is only seen as cost</span></label></div>
+                            <div><input type="radio" name="q12" value="2" id="q12_2" class="sr-only peer"><label for="q12_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Anecdotal stories, no quantification</span></label></div>
+                            <div><input type="radio" name="q12" value="3" id="q12_3" class="sr-only peer"><label for="q12_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Major saves documented ad-hoc</span></label></div>
+                            <div><input type="radio" name="q12" value="4" id="q12_4" class="sr-only peer"><label for="q12_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Systematic cost avoidance tracking</span></label></div>
+                            <div><input type="radio" name="q12" value="5" id="q12_5" class="sr-only peer"><label for="q12_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Value creation dashboard, ROI per initiative</span></label></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue to Pillar 2 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Pillar 2 - Manufacturing Process Reliability (8 questions) -->
+            <div class="step fade-in" data-step="4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-reliox-100 text-reliox-700 px-3 py-1 rounded-full text-sm font-medium">Pillar 2 of 5</span>
+                        <span class="text-gray-400 text-sm">8 questions</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Manufacturing Process Reliability</h2>
+                    
+                    <div class="pillar-intro rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 text-sm">
+                            <strong>Mission:</strong> Maximizing production effectiveness through seamless integration of maintenance and operations. This pillar assesses the symbiosis between maintenance and production—do they work as one team or as separate silos?
+                        </p>
+                    </div>
+
+                    <!-- 2.1 Production Integration -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-reliox-700">2.1 Production Integration</h3>
+                        <p class="text-sm text-gray-600">Measures the quality of collaboration between maintenance and production/operations.</p>
+                    </div>
+
+                    <!-- Q13 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">13. How is the collaboration between maintenance and production/operations?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q13" value="1" id="q13_1" class="sr-only peer" required><label for="q13_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Conflicting, "us vs them" culture</span></label></div>
+                            <div><input type="radio" name="q13" value="2" id="q13_2" class="sr-only peer"><label for="q13_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Limited communication, separate silos</span></label></div>
+                            <div><input type="radio" name="q13" value="3" id="q13_3" class="sr-only peer"><label for="q13_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Regular meetings, but separate responsibilities</span></label></div>
+                            <div><input type="radio" name="q13" value="4" id="q13_4" class="sr-only peer"><label for="q13_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Shared goals, shared KPIs, joint planning</span></label></div>
+                            <div><input type="radio" name="q13" value="5" id="q13_5" class="sr-only peer"><label for="q13_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Fully integrated teams, shared ownership of equipment</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q14 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">14. Is maintenance involved in production planning?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q14" value="1" id="q14_1" class="sr-only peer" required><label for="q14_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, maintenance works around production</span></label></div>
+                            <div><input type="radio" name="q14" value="2" id="q14_2" class="sr-only peer"><label for="q14_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informed of production schedule</span></label></div>
+                            <div><input type="radio" name="q14" value="3" id="q14_3" class="sr-only peer"><label for="q14_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Maintenance windows negotiated</span></label></div>
+                            <div><input type="radio" name="q14" value="4" id="q14_4" class="sr-only peer"><label for="q14_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Joint weekly/daily planning meetings</span></label></div>
+                            <div><input type="radio" name="q14" value="5" id="q14_5" class="sr-only peer"><label for="q14_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Integrated S&OP process, equipment constraints built-in</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 2.2 Downtime Management -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">2.2 Downtime Management</h3>
+                        <p class="text-sm text-gray-600">Evaluates how downtime is recorded, categorized, analyzed, and valued.</p>
+                    </div>
+
+                    <!-- Q15 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">15. How is downtime recorded and analyzed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q15" value="1" id="q15_1" class="sr-only peer" required><label for="q15_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Not systematic, anecdotal</span></label></div>
+                            <div><input type="radio" name="q15" value="2" id="q15_2" class="sr-only peer"><label for="q15_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Manual logs, limited analysis</span></label></div>
+                            <div><input type="radio" name="q15" value="3" id="q15_3" class="sr-only peer"><label for="q15_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Digital tracking, basic categorization</span></label></div>
+                            <div><input type="radio" name="q15" value="4" id="q15_4" class="sr-only peer"><label for="q15_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Detailed tracking, Pareto analysis, action plans</span></label></div>
+                            <div><input type="radio" name="q15" value="5" id="q15_5" class="sr-only peer"><label for="q15_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Real-time monitoring, automatic root cause linking</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q16 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">16. Are production losses from equipment failures quantified financially?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q16" value="1" id="q16_1" class="sr-only peer" required><label for="q16_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No quantification</span></label></div>
+                            <div><input type="radio" name="q16" value="2" id="q16_2" class="sr-only peer"><label for="q16_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Only for major incidents</span></label></div>
+                            <div><input type="radio" name="q16" value="3" id="q16_3" class="sr-only peer"><label for="q16_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Lost hours/tons tracked</span></label></div>
+                            <div><input type="radio" name="q16" value="4" id="q16_4" class="sr-only peer"><label for="q16_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Financial impact calculated per incident</span></label></div>
+                            <div><input type="radio" name="q16" value="5" id="q16_5" class="sr-only peer"><label for="q16_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Automatic, linked to OEE and business metrics</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 2.3 OEE & Performance -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">2.3 OEE & Performance</h3>
+                        <p class="text-sm text-gray-600">Assesses use of OEE as an integrated performance metric.</p>
+                    </div>
+
+                    <!-- Q17 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">17. Is OEE (Overall Equipment Effectiveness) measured?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q17" value="1" id="q17_1" class="sr-only peer" required><label for="q17_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, concept not applied</span></label></div>
+                            <div><input type="radio" name="q17" value="2" id="q17_2" class="sr-only peer"><label for="q17_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Known but not consistently applied</span></label></div>
+                            <div><input type="radio" name="q17" value="3" id="q17_3" class="sr-only peer"><label for="q17_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>OEE measured for critical lines</span></label></div>
+                            <div><input type="radio" name="q17" value="4" id="q17_4" class="sr-only peer"><label for="q17_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>OEE for all production, targets set</span></label></div>
+                            <div><input type="radio" name="q17" value="5" id="q17_5" class="sr-only peer"><label for="q17_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Real-time OEE, loss waterfall, improvement actions</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q18 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">18. How are production bottlenecks identified and addressed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q18" value="1" id="q18_1" class="sr-only peer" required><label for="q18_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Reactive, address when capacity issues arise</span></label></div>
+                            <div><input type="radio" name="q18" value="2" id="q18_2" class="sr-only peer"><label for="q18_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Known informally, no systematic approach</span></label></div>
+                            <div><input type="radio" name="q18" value="3" id="q18_3" class="sr-only peer"><label for="q18_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Bottleneck analysis done periodically</span></label></div>
+                            <div><input type="radio" name="q18" value="4" id="q18_4" class="sr-only peer"><label for="q18_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Systematic bottleneck management, improvement projects</span></label></div>
+                            <div><input type="radio" name="q18" value="5" id="q18_5" class="sr-only peer"><label for="q18_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Theory of Constraints applied, continuous optimization</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 2.4 Quality Interface -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">2.4 Quality Interface</h3>
+                        <p class="text-sm text-gray-600">Measures the connection between equipment condition and product quality.</p>
+                    </div>
+
+                    <!-- Q19 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">19. Is the relationship between equipment condition and product quality understood?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q19" value="1" id="q19_1" class="sr-only peer" required><label for="q19_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, quality and maintenance are separate worlds</span></label></div>
+                            <div><input type="radio" name="q19" value="2" id="q19_2" class="sr-only peer"><label for="q19_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Only for obvious quality failures</span></label></div>
+                            <div><input type="radio" name="q19" value="3" id="q19_3" class="sr-only peer"><label for="q19_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Relationship known for critical equipment</span></label></div>
+                            <div><input type="radio" name="q19" value="4" id="q19_4" class="sr-only peer"><label for="q19_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Quality-maintenance feedback loop in place</span></label></div>
+                            <div><input type="radio" name="q19" value="5" id="q19_5" class="sr-only peer"><label for="q19_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Predictive quality, equipment parameters linked to specs</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q20 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">20. Are quality defects fed back to maintenance?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q20" value="1" id="q20_1" class="sr-only peer" required><label for="q20_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No feedback mechanism</span></label></div>
+                            <div><input type="radio" name="q20" value="2" id="q20_2" class="sr-only peer"><label for="q20_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Only when quality issues are severe</span></label></div>
+                            <div><input type="radio" name="q20" value="3" id="q20_3" class="sr-only peer"><label for="q20_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Quality deviations trigger maintenance review</span></label></div>
+                            <div><input type="radio" name="q20" value="4" id="q20_4" class="sr-only peer"><label for="q20_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Systematic quality-maintenance integration</span></label></div>
+                            <div><input type="radio" name="q20" value="5" id="q20_5" class="sr-only peer"><label for="q20_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Real-time SPC linked to asset condition</span></label></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue to Pillar 3 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Pillar 3 - Equipment Reliability (13 questions) -->
+            <div class="step fade-in" data-step="5">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-reliox-100 text-reliox-700 px-3 py-1 rounded-full text-sm font-medium">Pillar 3 of 5</span>
+                        <span class="text-gray-400 text-sm">13 questions</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Equipment Reliability</h2>
+                    
+                    <div class="pillar-intro rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 text-sm">
+                            <strong>Mission:</strong> Maximizing asset availability and lifespan through proactive reliability engineering. This is the technical heart of maintenance excellence—assessing the systematic approach to preventing failures and optimizing maintenance strategies.
+                        </p>
+                    </div>
+
+                    <!-- 3.1 Maintenance Strategy per Asset -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-reliox-700">3.1 Maintenance Strategy per Asset</h3>
+                        <p class="text-sm text-gray-600">Evaluates differentiated maintenance approach and reactive/proactive balance.</p>
+                    </div>
+
+                    <!-- Q21 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">21. Is there a differentiated maintenance strategy per asset type?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q21" value="1" id="q21_1" class="sr-only peer" required><label for="q21_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, one-size-fits-all or purely reactive</span></label></div>
+                            <div><input type="radio" name="q21" value="2" id="q21_2" class="sr-only peer"><label for="q21_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic preventive maintenance (time-based)</span></label></div>
+                            <div><input type="radio" name="q21" value="3" id="q21_3" class="sr-only peer"><label for="q21_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Mix of PM and PdM for critical assets</span></label></div>
+                            <div><input type="radio" name="q21" value="4" id="q21_4" class="sr-only peer"><label for="q21_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>RCM/FMEA applied, strategy per failure mode</span></label></div>
+                            <div><input type="radio" name="q21" value="5" id="q21_5" class="sr-only peer"><label for="q21_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Living RCM, continuously optimized with data</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q22 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">22. What percentage of work is planned vs reactive?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q22" value="1" id="q22_1" class="sr-only peer" required><label for="q22_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>>70% reactive</span></label></div>
+                            <div><input type="radio" name="q22" value="2" id="q22_2" class="sr-only peer"><label for="q22_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>50-70% reactive</span></label></div>
+                            <div><input type="radio" name="q22" value="3" id="q22_3" class="sr-only peer"><label for="q22_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>30-50% reactive</span></label></div>
+                            <div><input type="radio" name="q22" value="4" id="q22_4" class="sr-only peer"><label for="q22_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>15-30% reactive</span></label></div>
+                            <div><input type="radio" name="q22" value="5" id="q22_5" class="sr-only peer"><label for="q22_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&lt;15% reactive (world-class)</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q23 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">23. Is asset criticality formally assessed and documented?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q23" value="1" id="q23_1" class="sr-only peer" required><label for="q23_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No criticality assessment</span></label></div>
+                            <div><input type="radio" name="q23" value="2" id="q23_2" class="sr-only peer"><label for="q23_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal, tribal knowledge</span></label></div>
+                            <div><input type="radio" name="q23" value="3" id="q23_3" class="sr-only peer"><label for="q23_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Documented for major assets</span></label></div>
+                            <div><input type="radio" name="q23" value="4" id="q23_4" class="sr-only peer"><label for="q23_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Formal criticality matrix for all assets</span></label></div>
+                            <div><input type="radio" name="q23" value="5" id="q23_5" class="sr-only peer"><label for="q23_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Dynamic criticality linked to production context</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 Predictive Maintenance -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">3.2 Predictive Maintenance</h3>
+                        <p class="text-sm text-gray-600">Assesses condition monitoring and predictive maintenance application.</p>
+                    </div>
+
+                    <!-- Q24 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">24. Is condition monitoring / predictive maintenance applied?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q24" value="1" id="q24_1" class="sr-only peer" required><label for="q24_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No condition monitoring</span></label></div>
+                            <div><input type="radio" name="q24" value="2" id="q24_2" class="sr-only peer"><label for="q24_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic visual inspections only</span></label></div>
+                            <div><input type="radio" name="q24" value="3" id="q24_3" class="sr-only peer"><label for="q24_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Periodic route-based measurements</span></label></div>
+                            <div><input type="radio" name="q24" value="4" id="q24_4" class="sr-only peer"><label for="q24_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Online monitoring of critical assets, trend analysis</span></label></div>
+                            <div><input type="radio" name="q24" value="5" id="q24_5" class="sr-only peer"><label for="q24_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Advanced analytics, ML-based prescriptive maintenance</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q25 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">25. Which PdM techniques are used? (Select the highest level applied)</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q25" value="1" id="q25_1" class="sr-only peer" required><label for="q25_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>None</span></label></div>
+                            <div><input type="radio" name="q25" value="2" id="q25_2" class="sr-only peer"><label for="q25_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic (temperature guns, visual)</span></label></div>
+                            <div><input type="radio" name="q25" value="3" id="q25_3" class="sr-only peer"><label for="q25_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Vibration analysis, thermography</span></label></div>
+                            <div><input type="radio" name="q25" value="4" id="q25_4" class="sr-only peer"><label for="q25_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Oil analysis, ultrasound, motor current analysis</span></label></div>
+                            <div><input type="radio" name="q25" value="5" id="q25_5" class="sr-only peer"><label for="q25_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Comprehensive multi-parameter monitoring, IoT sensors</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 3.3 Root Cause Analysis -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">3.3 Root Cause Analysis</h3>
+                        <p class="text-sm text-gray-600">Evaluates systematic approach to identifying and eliminating failure root causes.</p>
+                    </div>
+
+                    <!-- Q26 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">26. Is Root Cause Analysis (RCA) systematically performed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q26" value="1" id="q26_1" class="sr-only peer" required><label for="q26_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, just repair and move on</span></label></div>
+                            <div><input type="radio" name="q26" value="2" id="q26_2" class="sr-only peer"><label for="q26_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>For major incidents, informal</span></label></div>
+                            <div><input type="radio" name="q26" value="3" id="q26_3" class="sr-only peer"><label for="q26_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Formal RCA for significant failures</span></label></div>
+                            <div><input type="radio" name="q26" value="4" id="q26_4" class="sr-only peer"><label for="q26_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>RCA for all repeat failures, action tracking</span></label></div>
+                            <div><input type="radio" name="q26" value="5" id="q26_5" class="sr-only peer"><label for="q26_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Proactive RCFA, trend analysis, defect elimination program</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q27 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">27. How are RCA findings implemented?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q27" value="1" id="q27_1" class="sr-only peer" required><label for="q27_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No follow-up</span></label></div>
+                            <div><input type="radio" name="q27" value="2" id="q27_2" class="sr-only peer"><label for="q27_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Recommendations made, implementation varies</span></label></div>
+                            <div><input type="radio" name="q27" value="3" id="q27_3" class="sr-only peer"><label for="q27_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Action tracking for major findings</span></label></div>
+                            <div><input type="radio" name="q27" value="4" id="q27_4" class="sr-only peer"><label for="q27_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Systematic action management, effectiveness verification</span></label></div>
+                            <div><input type="radio" name="q27" value="5" id="q27_5" class="sr-only peer"><label for="q27_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Lessons learned database, fleet-wide implementation</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 3.4 Reliability Engineering -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">3.4 Reliability Engineering</h3>
+                        <p class="text-sm text-gray-600">Assesses dedicated reliability engineering capacity and FMEA application.</p>
+                    </div>
+
+                    <!-- Q28 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">28. Is there dedicated reliability engineering capacity?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q28" value="1" id="q28_1" class="sr-only peer" required><label for="q28_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, not present</span></label></div>
+                            <div><input type="radio" name="q28" value="2" id="q28_2" class="sr-only peer"><label for="q28_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Maintenance engineers do this on the side</span></label></div>
+                            <div><input type="radio" name="q28" value="3" id="q28_3" class="sr-only peer"><label for="q28_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Part-time reliability focus</span></label></div>
+                            <div><input type="radio" name="q28" value="4" id="q28_4" class="sr-only peer"><label for="q28_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Dedicated reliability engineer(s)</span></label></div>
+                            <div><input type="radio" name="q28" value="5" id="q28_5" class="sr-only peer"><label for="q28_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Reliability engineering team, embedded in organization</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q29 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">29. Is FMEA (Failure Mode & Effects Analysis) applied?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q29" value="1" id="q29_1" class="sr-only peer" required><label for="q29_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, concept not known</span></label></div>
+                            <div><input type="radio" name="q29" value="2" id="q29_2" class="sr-only peer"><label for="q29_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Known but not applied</span></label></div>
+                            <div><input type="radio" name="q29" value="3" id="q29_3" class="sr-only peer"><label for="q29_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Applied for new equipment only</span></label></div>
+                            <div><input type="radio" name="q29" value="4" id="q29_4" class="sr-only peer"><label for="q29_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>FMEA for critical assets, linked to maintenance strategy</span></label></div>
+                            <div><input type="radio" name="q29" value="5" id="q29_5" class="sr-only peer"><label for="q29_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Living FMEA, continuously updated with failure data</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 3.5 Lubrication & Precision Maintenance -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">3.5 Lubrication & Precision Maintenance</h3>
+                        <p class="text-sm text-gray-600">Evaluates fundamental technical disciplines with major impact on reliability.</p>
+                    </div>
+
+                    <!-- Q30 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">30. Is there a structured lubrication program?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q30" value="1" id="q30_1" class="sr-only peer" required><label for="q30_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No program, reactive greasing</span></label></div>
+                            <div><input type="radio" name="q30" value="2" id="q30_2" class="sr-only peer"><label for="q30_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic lubrication schedule exists</span></label></div>
+                            <div><input type="radio" name="q30" value="3" id="q30_3" class="sr-only peer"><label for="q30_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Documented lubrication routes with specifications</span></label></div>
+                            <div><input type="radio" name="q30" value="4" id="q30_4" class="sr-only peer"><label for="q30_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Optimized program, contamination control, oil analysis</span></label></div>
+                            <div><input type="radio" name="q30" value="5" id="q30_5" class="sr-only peer"><label for="q30_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>World-class lubrication excellence, certified technicians</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q31 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">31. Is precision maintenance applied (alignment, balancing)?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q31" value="1" id="q31_1" class="sr-only peer" required><label for="q31_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, visual alignment only</span></label></div>
+                            <div><input type="radio" name="q31" value="2" id="q31_2" class="sr-only peer"><label for="q31_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Dial indicators used sometimes</span></label></div>
+                            <div><input type="radio" name="q31" value="3" id="q31_3" class="sr-only peer"><label for="q31_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Laser alignment for critical machines</span></label></div>
+                            <div><input type="radio" name="q31" value="4" id="q31_4" class="sr-only peer"><label for="q31_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Standard precision techniques, documented tolerances</span></label></div>
+                            <div><input type="radio" name="q31" value="5" id="q31_5" class="sr-only peer"><label for="q31_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Precision maintenance culture, certified technicians</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 3.6 Performance Metrics & Data Quality -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">3.6 Performance Metrics & Data Quality</h3>
+                        <p class="text-sm text-gray-600">Assesses equipment-level metrics and CMMS data quality.</p>
+                    </div>
+
+                    <!-- Q32 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">32. Is OEE measured at equipment level?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q32" value="1" id="q32_1" class="sr-only peer" required><label for="q32_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No equipment-level metrics</span></label></div>
+                            <div><input type="radio" name="q32" value="2" id="q32_2" class="sr-only peer"><label for="q32_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Availability tracked for some equipment</span></label></div>
+                            <div><input type="radio" name="q32" value="3" id="q32_3" class="sr-only peer"><label for="q32_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>OEE for bottleneck equipment</span></label></div>
+                            <div><input type="radio" name="q32" value="4" id="q32_4" class="sr-only peer"><label for="q32_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>OEE for all critical equipment, trends analyzed</span></label></div>
+                            <div><input type="radio" name="q32" value="5" id="q32_5" class="sr-only peer"><label for="q32_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Real-time equipment OEE, automated improvement triggers</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q33 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">33. How well is failure data recorded in the CMMS?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q33" value="1" id="q33_1" class="sr-only peer" required><label for="q33_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Minimal, just "repaired"</span></label></div>
+                            <div><input type="radio" name="q33" value="2" id="q33_2" class="sr-only peer"><label for="q33_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic work order closure, inconsistent</span></label></div>
+                            <div><input type="radio" name="q33" value="3" id="q33_3" class="sr-only peer"><label for="q33_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Failure codes used, not standardized</span></label></div>
+                            <div><input type="radio" name="q33" value="4" id="q33_4" class="sr-only peer"><label for="q33_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Standardized failure codes, root cause recorded</span></label></div>
+                            <div><input type="radio" name="q33" value="5" id="q33_5" class="sr-only peer"><label for="q33_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>ISO 14224 compliant, feeds reliability analysis</span></label></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue to Pillar 4 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Pillar 4 - Organization & Leadership (9 questions) -->
+            <div class="step fade-in" data-step="6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-reliox-100 text-reliox-700 px-3 py-1 rounded-full text-sm font-medium">Pillar 4 of 5</span>
+                        <span class="text-gray-400 text-sm">9 questions</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Organization & Leadership</h2>
+                    
+                    <div class="pillar-intro rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 text-sm">
+                            <strong>Mission:</strong> Building a high-performance maintenance organization with the right people, structure, and culture. The best processes and technologies fail without the right people and culture.
+                        </p>
+                    </div>
+
+                    <!-- 4.1 Organization Structure -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-reliox-700">4.1 Organization Structure</h3>
+                        <p class="text-sm text-gray-600">Evaluates maintenance organization structure and role clarity.</p>
+                    </div>
+
+                    <!-- Q34 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">34. How is the maintenance organization structured?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q34" value="1" id="q34_1" class="sr-only peer" required><label for="q34_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Unclear, ad-hoc responsibilities</span></label></div>
+                            <div><input type="radio" name="q34" value="2" id="q34_2" class="sr-only peer"><label for="q34_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic hierarchy, limited specialization</span></label></div>
+                            <div><input type="radio" name="q34" value="3" id="q34_3" class="sr-only peer"><label for="q34_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Defined roles, some specialization</span></label></div>
+                            <div><input type="radio" name="q34" value="4" id="q34_4" class="sr-only peer"><label for="q34_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Clear structure with planning, execution, reliability roles</span></label></div>
+                            <div><input type="radio" name="q34" value="5" id="q34_5" class="sr-only peer"><label for="q34_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Optimized structure aligned with business needs</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q35 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">35. Is there a clear separation between planning and execution?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q35" value="1" id="q35_1" class="sr-only peer" required><label for="q35_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, technicians plan their own work</span></label></div>
+                            <div><input type="radio" name="q35" value="2" id="q35_2" class="sr-only peer"><label for="q35_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Supervisor does some planning</span></label></div>
+                            <div><input type="radio" name="q35" value="3" id="q35_3" class="sr-only peer"><label for="q35_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Dedicated planner, limited authority</span></label></div>
+                            <div><input type="radio" name="q35" value="4" id="q35_4" class="sr-only peer"><label for="q35_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Planner/scheduler roles, 80%+ work planned</span></label></div>
+                            <div><input type="radio" name="q35" value="5" id="q35_5" class="sr-only peer"><label for="q35_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Mature planning organization, continuous improvement</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 4.2 Competencies & Training -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">4.2 Competencies & Training</h3>
+                        <p class="text-sm text-gray-600">Assesses competency management, training, and knowledge retention.</p>
+                    </div>
+
+                    <!-- Q36 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">36. Is there a competency matrix for maintenance personnel?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q36" value="1" id="q36_1" class="sr-only peer" required><label for="q36_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No competency overview</span></label></div>
+                            <div><input type="radio" name="q36" value="2" id="q36_2" class="sr-only peer"><label for="q36_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal knowledge of skills</span></label></div>
+                            <div><input type="radio" name="q36" value="3" id="q36_3" class="sr-only peer"><label for="q36_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic skill matrix exists</span></label></div>
+                            <div><input type="radio" name="q36" value="4" id="q36_4" class="sr-only peer"><label for="q36_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Detailed competency matrix, gap analysis done</span></label></div>
+                            <div><input type="radio" name="q36" value="5" id="q36_5" class="sr-only peer"><label for="q36_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Competency framework linked to certification and career</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q37 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">37. How is training organized?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q37" value="1" id="q37_1" class="sr-only peer" required><label for="q37_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No structured training</span></label></div>
+                            <div><input type="radio" name="q37" value="2" id="q37_2" class="sr-only peer"><label for="q37_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>On-the-job only, ad-hoc</span></label></div>
+                            <div><input type="radio" name="q37" value="3" id="q37_3" class="sr-only peer"><label for="q37_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Annual training plan exists</span></label></div>
+                            <div><input type="radio" name="q37" value="4" id="q37_4" class="sr-only peer"><label for="q37_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Structured program, mix of internal and external</span></label></div>
+                            <div><input type="radio" name="q37" value="5" id="q37_5" class="sr-only peer"><label for="q37_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Learning organization, certifications, apprenticeship</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q38 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">38. How is technical knowledge retained?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q38" value="1" id="q38_1" class="sr-only peer" required><label for="q38_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>In people's heads, not documented</span></label></div>
+                            <div><input type="radio" name="q38" value="2" id="q38_2" class="sr-only peer"><label for="q38_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic procedures exist</span></label></div>
+                            <div><input type="radio" name="q38" value="3" id="q38_3" class="sr-only peer"><label for="q38_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Work instructions and procedures available</span></label></div>
+                            <div><input type="radio" name="q38" value="4" id="q38_4" class="sr-only peer"><label for="q38_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Knowledge base, lessons learned recorded</span></label></div>
+                            <div><input type="radio" name="q38" value="5" id="q38_5" class="sr-only peer"><label for="q38_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Systematic knowledge management, mentoring program</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 4.3 Leadership & Culture -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">4.3 Leadership & Culture</h3>
+                        <p class="text-sm text-gray-600">Evaluates maintenance leadership, CI culture, and employee engagement.</p>
+                    </div>
+
+                    <!-- Q39 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">39. How is maintenance leadership experienced by the team?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q39" value="1" id="q39_1" class="sr-only peer" required><label for="q39_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Absent or directive only</span></label></div>
+                            <div><input type="radio" name="q39" value="2" id="q39_2" class="sr-only peer"><label for="q39_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Task-focused, limited development</span></label></div>
+                            <div><input type="radio" name="q39" value="3" id="q39_3" class="sr-only peer"><label for="q39_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Supportive, some coaching</span></label></div>
+                            <div><input type="radio" name="q39" value="4" id="q39_4" class="sr-only peer"><label for="q39_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Coaching leadership, clear vision communicated</span></label></div>
+                            <div><input type="radio" name="q39" value="5" id="q39_5" class="sr-only peer"><label for="q39_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Inspirational leadership, empowerment culture</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q40 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">40. Is there a culture of continuous improvement?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q40" value="1" id="q40_1" class="sr-only peer" required><label for="q40_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, resistance to change</span></label></div>
+                            <div><input type="radio" name="q40" value="2" id="q40_2" class="sr-only peer"><label for="q40_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Occasional improvement initiatives</span></label></div>
+                            <div><input type="radio" name="q40" value="3" id="q40_3" class="sr-only peer"><label for="q40_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Improvement programs running, mixed success</span></label></div>
+                            <div><input type="radio" name="q40" value="4" id="q40_4" class="sr-only peer"><label for="q40_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>CI culture embedded, employees contribute ideas</span></label></div>
+                            <div><input type="radio" name="q40" value="5" id="q40_5" class="sr-only peer"><label for="q40_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Kaizen mindset, data-driven improvement, psychological safety</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q41 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">41. How is the engagement/motivation of maintenance employees?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q41" value="1" id="q41_1" class="sr-only peer" required><label for="q41_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Low, high turnover</span></label></div>
+                            <div><input type="radio" name="q41" value="2" id="q41_2" class="sr-only peer"><label for="q41_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Variable, depends on individuals</span></label></div>
+                            <div><input type="radio" name="q41" value="3" id="q41_3" class="sr-only peer"><label for="q41_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Generally positive, some concerns</span></label></div>
+                            <div><input type="radio" name="q41" value="4" id="q41_4" class="sr-only peer"><label for="q41_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>High engagement, pride in work</span></label></div>
+                            <div><input type="radio" name="q41" value="5" id="q41_5" class="sr-only peer"><label for="q41_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Exceptional engagement, employer of choice</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 4.4 Contractor Management -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">4.4 Contractor Management</h3>
+                        <p class="text-sm text-gray-600">Assesses approach to managing external contractors and service providers.</p>
+                    </div>
+
+                    <!-- Q42 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">42. How are contractors/external parties managed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q42" value="1" id="q42_1" class="sr-only peer" required><label for="q42_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Ad-hoc hiring, little management</span></label></div>
+                            <div><input type="radio" name="q42" value="2" id="q42_2" class="sr-only peer"><label for="q42_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Regular contractors, basic agreements</span></label></div>
+                            <div><input type="radio" name="q42" value="3" id="q42_3" class="sr-only peer"><label for="q42_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Contracts with SLAs, periodic evaluation</span></label></div>
+                            <div><input type="radio" name="q42" value="4" id="q42_4" class="sr-only peer"><label for="q42_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Strategic contractor management, partnerships</span></label></div>
+                            <div><input type="radio" name="q42" value="5" id="q42_5" class="sr-only peer"><label for="q42_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Integrated contractor strategy, performance-based contracts</span></label></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue to Pillar 5 →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 7: Pillar 5 - Work Management (14 questions) -->
+            <div class="step fade-in" data-step="7">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-reliox-100 text-reliox-700 px-3 py-1 rounded-full text-sm font-medium">Pillar 5 of 5</span>
+                        <span class="text-gray-400 text-sm">14 questions</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Work Management</h2>
+                    
+                    <div class="pillar-intro rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 text-sm">
+                            <strong>Mission:</strong> Efficiently and effectively executing maintenance work through structured processes. This is where strategy meets reality—converting plans into completed work.
+                        </p>
+                    </div>
+
+                    <!-- 5.1 Work Identification -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-reliox-700">5.1 Work Identification</h3>
+                        <p class="text-sm text-gray-600">Evaluates how maintenance work is identified and initiated.</p>
+                    </div>
+
+                    <!-- Q43 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">43. How are maintenance tasks identified?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q43" value="1" id="q43_1" class="sr-only peer" required><label for="q43_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Breakdowns only</span></label></div>
+                            <div><input type="radio" name="q43" value="2" id="q43_2" class="sr-only peer"><label for="q43_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Breakdowns + some scheduled PM</span></label></div>
+                            <div><input type="radio" name="q43" value="3" id="q43_3" class="sr-only peer"><label for="q43_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>PM + operator notifications</span></label></div>
+                            <div><input type="radio" name="q43" value="4" id="q43_4" class="sr-only peer"><label for="q43_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>PM + PdM + proactive inspections</span></label></div>
+                            <div><input type="radio" name="q43" value="5" id="q43_5" class="sr-only peer"><label for="q43_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Comprehensive: PM, PdM, autonomous maintenance, analytics</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q44 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">44. Is there a clear work request process?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q44" value="1" id="q44_1" class="sr-only peer" required><label for="q44_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, verbal or ad-hoc</span></label></div>
+                            <div><input type="radio" name="q44" value="2" id="q44_2" class="sr-only peer"><label for="q44_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Informal (phone, email)</span></label></div>
+                            <div><input type="radio" name="q44" value="3" id="q44_3" class="sr-only peer"><label for="q44_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Digital notification system</span></label></div>
+                            <div><input type="radio" name="q44" value="4" id="q44_4" class="sr-only peer"><label for="q44_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Streamlined process, screening, prioritization</span></label></div>
+                            <div><input type="radio" name="q44" value="5" id="q44_5" class="sr-only peer"><label for="q44_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Self-service portal, automatic routing, SLAs</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 5.2 Planning & Scheduling -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">5.2 Planning & Scheduling</h3>
+                        <p class="text-sm text-gray-600">Assesses work order planning and scheduling quality.</p>
+                    </div>
+
+                    <!-- Q45 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">45. How is maintenance work planned?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q45" value="1" id="q45_1" class="sr-only peer" required><label for="q45_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Not planned, execute immediately</span></label></div>
+                            <div><input type="radio" name="q45" value="2" id="q45_2" class="sr-only peer"><label for="q45_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic planning, often incomplete</span></label></div>
+                            <div><input type="radio" name="q45" value="3" id="q45_3" class="sr-only peer"><label for="q45_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Job plans for routine work</span></label></div>
+                            <div><input type="radio" name="q45" value="4" id="q45_4" class="sr-only peer"><label for="q45_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Detailed planning: scope, materials, labor, permits</span></label></div>
+                            <div><input type="radio" name="q45" value="5" id="q45_5" class="sr-only peer"><label for="q45_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Optimized planning, resource leveling, kitting</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q46 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">46. How is work scheduled?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q46" value="1" id="q46_1" class="sr-only peer" required><label for="q46_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No scheduling, firefighting</span></label></div>
+                            <div><input type="radio" name="q46" value="2" id="q46_2" class="sr-only peer"><label for="q46_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Daily assignment by supervisor</span></label></div>
+                            <div><input type="radio" name="q46" value="3" id="q46_3" class="sr-only peer"><label for="q46_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Weekly scheduling, some coordination</span></label></div>
+                            <div><input type="radio" name="q46" value="4" id="q46_4" class="sr-only peer"><label for="q46_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Weekly schedule frozen, daily schedule managed</span></label></div>
+                            <div><input type="radio" name="q46" value="5" id="q46_5" class="sr-only peer"><label for="q46_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Integrated scheduling with production, resource optimization</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q47 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">47. What is schedule compliance?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q47" value="1" id="q47_1" class="sr-only peer" required><label for="q47_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Not measured</span></label></div>
+                            <div><input type="radio" name="q47" value="2" id="q47_2" class="sr-only peer"><label for="q47_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&lt;50%</span></label></div>
+                            <div><input type="radio" name="q47" value="3" id="q47_3" class="sr-only peer"><label for="q47_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>50-70%</span></label></div>
+                            <div><input type="radio" name="q47" value="4" id="q47_4" class="sr-only peer"><label for="q47_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>70-85%</span></label></div>
+                            <div><input type="radio" name="q47" value="5" id="q47_5" class="sr-only peer"><label for="q47_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&gt;85%</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 5.3 CMMS Utilization -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">5.3 CMMS Utilization</h3>
+                        <p class="text-sm text-gray-600">Evaluates CMMS effectiveness as the maintenance system of record.</p>
+                    </div>
+
+                    <!-- Q48 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">48. Is there a CMMS and how is it used?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q48" value="1" id="q48_1" class="sr-only peer" required><label for="q48_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No CMMS, only Excel/paper</span></label></div>
+                            <div><input type="radio" name="q48" value="2" id="q48_2" class="sr-only peer"><label for="q48_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>CMMS exists, minimal use</span></label></div>
+                            <div><input type="radio" name="q48" value="3" id="q48_3" class="sr-only peer"><label for="q48_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>CMMS for work orders and basic registration</span></label></div>
+                            <div><input type="radio" name="q48" value="4" id="q48_4" class="sr-only peer"><label for="q48_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>CMMS fully implemented, good data quality</span></label></div>
+                            <div><input type="radio" name="q48" value="5" id="q48_5" class="sr-only peer"><label for="q48_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>CMMS as single source of truth, analytics, mobile</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q49 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">49. How complete is the asset register in the CMMS?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q49" value="1" id="q49_1" class="sr-only peer" required><label for="q49_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No asset register</span></label></div>
+                            <div><input type="radio" name="q49" value="2" id="q49_2" class="sr-only peer"><label for="q49_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&lt;50% of assets registered</span></label></div>
+                            <div><input type="radio" name="q49" value="3" id="q49_3" class="sr-only peer"><label for="q49_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>50-80% assets, basic data</span></label></div>
+                            <div><input type="radio" name="q49" value="4" id="q49_4" class="sr-only peer"><label for="q49_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&gt;90% assets, complete data</span></label></div>
+                            <div><input type="radio" name="q49" value="5" id="q49_5" class="sr-only peer"><label for="q49_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Complete register, hierarchy, linked documents</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q50 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">50. Is work order history used for decisions?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q50" value="1" id="q50_1" class="sr-only peer" required><label for="q50_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No history available/used</span></label></div>
+                            <div><input type="radio" name="q50" value="2" id="q50_2" class="sr-only peer"><label for="q50_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>History exists but rarely consulted</span></label></div>
+                            <div><input type="radio" name="q50" value="3" id="q50_3" class="sr-only peer"><label for="q50_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Used for troubleshooting</span></label></div>
+                            <div><input type="radio" name="q50" value="4" id="q50_4" class="sr-only peer"><label for="q50_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Regular analysis, PM optimization</span></label></div>
+                            <div><input type="radio" name="q50" value="5" id="q50_5" class="sr-only peer"><label for="q50_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Data-driven decisions, reliability analysis, ML</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 5.4 Materials Management (MRO) -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">5.4 Materials Management (MRO)</h3>
+                        <p class="text-sm text-gray-600">Assesses spare parts management and impact on work execution.</p>
+                    </div>
+
+                    <!-- Q51 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">51. How is spare parts management organized?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q51" value="1" id="q51_1" class="sr-only peer" required><label for="q51_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Chaotic, no overview</span></label></div>
+                            <div><input type="radio" name="q51" value="2" id="q51_2" class="sr-only peer"><label for="q51_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Basic warehouse, incomplete insight</span></label></div>
+                            <div><input type="radio" name="q51" value="3" id="q51_3" class="sr-only peer"><label for="q51_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Organized warehouse, inventory tracking</span></label></div>
+                            <div><input type="radio" name="q51" value="4" id="q51_4" class="sr-only peer"><label for="q51_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Optimized stock, min/max, ABC classification</span></label></div>
+                            <div><input type="radio" name="q51" value="5" id="q51_5" class="sr-only peer"><label for="q51_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Integrated supply chain, vendor managed inventory</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q52 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">52. How often do parts availability issues delay work?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q52" value="1" id="q52_1" class="sr-only peer" required><label for="q52_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Very often (&gt;30% of work orders)</span></label></div>
+                            <div><input type="radio" name="q52" value="2" id="q52_2" class="sr-only peer"><label for="q52_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Often (15-30%)</span></label></div>
+                            <div><input type="radio" name="q52" value="3" id="q52_3" class="sr-only peer"><label for="q52_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Sometimes (5-15%)</span></label></div>
+                            <div><input type="radio" name="q52" value="4" id="q52_4" class="sr-only peer"><label for="q52_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Rarely (&lt;5%)</span></label></div>
+                            <div><input type="radio" name="q52" value="5" id="q52_5" class="sr-only peer"><label for="q52_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Almost never, kitting in place</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 5.5 Labor Productivity & Wrench Time -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">5.5 Labor Productivity & Wrench Time</h3>
+                        <p class="text-sm text-gray-600">Evaluates wrench time as a measure of labor productivity.</p>
+                    </div>
+
+                    <!-- Q53 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">53. Is wrench time (hands-on tool time) measured?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q53" value="1" id="q53_1" class="sr-only peer" required><label for="q53_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No, concept not applied</span></label></div>
+                            <div><input type="radio" name="q53" value="2" id="q53_2" class="sr-only peer"><label for="q53_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Anecdotal awareness</span></label></div>
+                            <div><input type="radio" name="q53" value="3" id="q53_3" class="sr-only peer"><label for="q53_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Occasional studies done</span></label></div>
+                            <div><input type="radio" name="q53" value="4" id="q53_4" class="sr-only peer"><label for="q53_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Regular measurement, improvement actions</span></label></div>
+                            <div><input type="radio" name="q53" value="5" id="q53_5" class="sr-only peer"><label for="q53_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Continuous tracking, &gt;50% wrench time achieved</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q54 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">54. What is the estimated wrench time of technicians?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q54" value="1" id="q54_1" class="sr-only peer" required><label for="q54_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&lt;20%</span></label></div>
+                            <div><input type="radio" name="q54" value="2" id="q54_2" class="sr-only peer"><label for="q54_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>20-30%</span></label></div>
+                            <div><input type="radio" name="q54" value="3" id="q54_3" class="sr-only peer"><label for="q54_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>30-40%</span></label></div>
+                            <div><input type="radio" name="q54" value="4" id="q54_4" class="sr-only peer"><label for="q54_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>40-50%</span></label></div>
+                            <div><input type="radio" name="q54" value="5" id="q54_5" class="sr-only peer"><label for="q54_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>&gt;50% (world-class)</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- Q55 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">55. What factors most negatively impact wrench time?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q55" value="1" id="q55_1" class="sr-only peer" required><label for="q55_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Everything: travel, waiting, searching, admin</span></label></div>
+                            <div><input type="radio" name="q55" value="2" id="q55_2" class="sr-only peer"><label for="q55_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Multiple major issues</span></label></div>
+                            <div><input type="radio" name="q55" value="3" id="q55_3" class="sr-only peer"><label for="q55_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>1-2 known issues being addressed</span></label></div>
+                            <div><input type="radio" name="q55" value="4" id="q55_4" class="sr-only peer"><label for="q55_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Minor inefficiencies only</span></label></div>
+                            <div><input type="radio" name="q55" value="5" id="q55_5" class="sr-only peer"><label for="q55_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Well optimized, no significant barriers</span></label></div>
+                        </div>
+                    </div>
+
+                    <!-- 5.6 Backlog Management -->
+                    <div class="subcategory-header rounded-lg p-4 mb-4 mt-8">
+                        <h3 class="font-semibold text-reliox-700">5.6 Backlog Management</h3>
+                        <p class="text-sm text-gray-600">Assesses management of the maintenance work backlog.</p>
+                    </div>
+
+                    <!-- Q56 -->
+                    <div class="mb-6 pl-4">
+                        <h4 class="font-medium text-gray-900 mb-3">56. Is the maintenance backlog actively managed?</h4>
+                        <div class="space-y-2">
+                            <div><input type="radio" name="q56" value="1" id="q56_1" class="sr-only peer" required><label for="q56_1" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>No insight into backlog</span></label></div>
+                            <div><input type="radio" name="q56" value="2" id="q56_2" class="sr-only peer"><label for="q56_2" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Backlog known, not managed</span></label></div>
+                            <div><input type="radio" name="q56" value="3" id="q56_3" class="sr-only peer"><label for="q56_3" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Measured, periodic review</span></label></div>
+                            <div><input type="radio" name="q56" value="4" id="q56_4" class="sr-only peer"><label for="q56_4" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Active management, prioritization, aging analysis</span></label></div>
+                            <div><input type="radio" name="q56" value="5" id="q56_5" class="sr-only peer"><label for="q56_5" class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm"><span class="w-4 h-4 border-2 border-gray-300 rounded-full flex-shrink-0 check-circle"></span><span>Healthy backlog (2-4 weeks), continuous grooming</span></label></div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="nextStep()" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Continue to Final Questions →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 8: Optional Questions -->
+            <div class="step fade-in" data-step="8">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Additional Insights (Optional)</h2>
+                    <p class="text-gray-600 mb-6">These questions help us provide more targeted recommendations.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">What is your biggest maintenance challenge?</label>
+                            <textarea name="challenge" rows="3" placeholder="E.g., lack of personnel, outdated systems, budget constraints, reactive culture..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">What would you most like to improve in the next 12 months?</label>
+                            <textarea name="improvement_goal" rows="3" placeholder="Describe your improvement priorities..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reliox-500 focus:border-reliox-500"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">What are you interested in?</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" name="interest[]" value="call" class="w-5 h-5 text-reliox-500 border-gray-300 rounded focus:ring-reliox-500">
+                                    <span>Free 30-minute results discussion</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" name="interest[]" value="demo" class="w-5 h-5 text-reliox-500 border-gray-300 rounded focus:ring-reliox-500">
+                                    <span>Demo of improvement roadmap tool</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" name="interest[]" value="consultancy" class="w-5 h-5 text-reliox-500 border-gray-300 rounded focus:ring-reliox-500">
+                                    <span>More information about consultancy services</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" name="interest[]" value="benchmark" class="w-5 h-5 text-reliox-500 border-gray-300 rounded focus:ring-reliox-500">
+                                    <span>Industry benchmark report</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="checkbox" name="interest[]" value="report_only" class="w-5 h-5 text-reliox-500 border-gray-300 rounded focus:ring-reliox-500">
+                                    <span>Just the report, please</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mt-8">
+                        <button type="button" onclick="prevStep()" class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                            ← Back
+                        </button>
+                        <button type="submit" id="submit-btn" class="flex-1 bg-reliox-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-reliox-600 transition-colors">
+                            Submit Assessment →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 9: Thank You -->
+            <div class="step fade-in" data-step="9">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
+                    <p class="text-lg text-gray-600 mb-6">
+                        Your comprehensive assessment has been submitted successfully.
+                    </p>
+                    <div class="bg-reliox-50 rounded-lg p-6 mb-6 text-left">
+                        <h3 class="font-semibold text-reliox-700 mb-3">You will receive within 10 minutes:</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Overall maturity score and level
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Score per pillar (5) and subcategory (21)
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Spider/radar diagram visualization
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Benchmark comparison with industry peers
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Top 5 improvement priorities
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <span class="text-green-500">✓</span> Detailed recommendations per category
+                            </li>
+                        </ul>
+                    </div>
+                    <p class="text-sm text-gray-500">
+                        No email received? Check your spam folder or contact us at <a href="mailto:info@reliox.ai" class="text-reliox-500 hover:underline">info@reliox.ai</a>
+                    </p>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+    <footer class="max-w-4xl mx-auto px-4 py-8 text-center text-sm text-gray-500">
+        <p>© 2026 Reliox. All rights reserved. | Based on SMRP & IAM frameworks</p>
+    </footer>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 9;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const pillarIndicator = document.getElementById('pillar-indicator');
+            const percentage = (currentStep / totalSteps) * 100;
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = `Step ${currentStep} of ${totalSteps}`;
+            
+            // Update pillar indicator
+            const pillarNames = ['', '', 'Company Info', 'P1: Business', 'P2: Process', 'P3: Equipment', 'P4: Organization', 'P5: Work', 'Additional', 'Complete'];
+            pillarIndicator.textContent = pillarNames[currentStep] || '';
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            const targetStep = document.querySelector(`.step[data-step="${step}"]`);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            updateProgress();
+        }
+
+        function validateCurrentStep() {
+            const currentStepEl = document.querySelector(`.step[data-step="${currentStep}"]`);
+            if (!currentStepEl) return true;
+            
+            const requiredInputs = currentStepEl.querySelectorAll('[required]');
+            let valid = true;
+            let firstInvalid = null;
+            
+            requiredInputs.forEach(input => {
+                if (input.type === 'radio') {
+                    const name = input.name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    const container = input.closest('.mb-6');
+                    if (!checked) {
+                        valid = false;
+                        if (container) {
+                            container.classList.add('ring-2', 'ring-red-300', 'rounded-lg', 'p-2');
+                            if (!firstInvalid) firstInvalid = container;
+                        }
+                    } else {
+                        if (container) container.classList.remove('ring-2', 'ring-red-300', 'rounded-lg', 'p-2');
+                    }
+                } else if (!input.value.trim()) {
+                    valid = false;
+                    input.classList.add('border-red-500');
+                    if (!firstInvalid) firstInvalid = input;
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+            
+            if (!valid && firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            return valid;
+        }
+
+        function nextStep() {
+            if (!validateCurrentStep()) return;
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        // Clear validation highlighting on radio change
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const container = this.closest('.mb-6');
+                if (container) container.classList.remove('ring-2', 'ring-red-300', 'rounded-lg', 'p-2');
+            });
+        });
+
+        // Form submission - 56 questions, 280 max points
+        document.getElementById('assessment-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                if (key === 'interest[]') {
+                    if (!data.interests) data.interests = [];
+                    data.interests.push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Add metadata
+            data.submitted_at = new Date().toISOString();
+            data.source = 'assessment_v2_full';
+            data.version = '2.0';
+            
+            // Calculate scores per pillar (56 questions total, 280 max)
+            // P1: Q1-Q12 (12 questions, 60 max) - Business & Management
+            // P2: Q13-Q20 (8 questions, 40 max) - Process Reliability
+            // P3: Q21-Q33 (13 questions, 65 max) - Equipment Reliability
+            // P4: Q34-Q42 (9 questions, 45 max) - Organization & Leadership
+            // P5: Q43-Q56 (14 questions, 70 max) - Work Management
+            
+            const scores = {
+                pillar1: { score: 0, max: 60, name: 'Business & Management' },
+                pillar2: { score: 0, max: 40, name: 'Process Reliability' },
+                pillar3: { score: 0, max: 65, name: 'Equipment Reliability' },
+                pillar4: { score: 0, max: 45, name: 'Organization & Leadership' },
+                pillar5: { score: 0, max: 70, name: 'Work Management' },
+                total: 0,
+                maxTotal: 280
+            };
+            
+            // P1: Business & Management (Q1-Q12)
+            for (let i = 1; i <= 12; i++) scores.pillar1.score += parseInt(data[`q${i}`] || 0);
+            
+            // P2: Process Reliability (Q13-Q20)
+            for (let i = 13; i <= 20; i++) scores.pillar2.score += parseInt(data[`q${i}`] || 0);
+            
+            // P3: Equipment Reliability (Q21-Q33)
+            for (let i = 21; i <= 33; i++) scores.pillar3.score += parseInt(data[`q${i}`] || 0);
+            
+            // P4: Organization & Leadership (Q34-Q42)
+            for (let i = 34; i <= 42; i++) scores.pillar4.score += parseInt(data[`q${i}`] || 0);
+            
+            // P5: Work Management (Q43-Q56)
+            for (let i = 43; i <= 56; i++) scores.pillar5.score += parseInt(data[`q${i}`] || 0);
+            
+            // Total score
+            scores.total = scores.pillar1.score + scores.pillar2.score + scores.pillar3.score + scores.pillar4.score + scores.pillar5.score;
+            
+            // Calculate percentages
+            scores.pillar1.percentage = Math.round((scores.pillar1.score / scores.pillar1.max) * 100);
+            scores.pillar2.percentage = Math.round((scores.pillar2.score / scores.pillar2.max) * 100);
+            scores.pillar3.percentage = Math.round((scores.pillar3.score / scores.pillar3.max) * 100);
+            scores.pillar4.percentage = Math.round((scores.pillar4.score / scores.pillar4.max) * 100);
+            scores.pillar5.percentage = Math.round((scores.pillar5.score / scores.pillar5.max) * 100);
+            scores.totalPercentage = Math.round((scores.total / scores.maxTotal) * 100);
+            
+            data.scores = scores;
+            
+            // Determine maturity level based on percentage
+            // Innocent: ≤35%, Aware: 36-50%, Developing: 51-70%, Competent: 71-85%, Excellent: >85%
+            const pct = scores.totalPercentage;
+            if (pct <= 35) data.maturity = { level: 1, name: 'Innocent', description: 'No conscious control, purely reactive' };
+            else if (pct <= 50) data.maturity = { level: 2, name: 'Aware', description: 'Aware of importance, starting structure' };
+            else if (pct <= 70) data.maturity = { level: 3, name: 'Developing', description: 'Processes being built, inconsistent' };
+            else if (pct <= 85) data.maturity = { level: 4, name: 'Competent', description: 'Structured, measurable, improving' };
+            else data.maturity = { level: 5, name: 'Excellent', description: 'Optimized, predictive, benchmark' };
+            
+            // Determine maturity per pillar
+            function getPillarMaturity(pct) {
+                if (pct <= 35) return { level: 1, name: 'Innocent' };
+                if (pct <= 50) return { level: 2, name: 'Aware' };
+                if (pct <= 70) return { level: 3, name: 'Developing' };
+                if (pct <= 85) return { level: 4, name: 'Competent' };
+                return { level: 5, name: 'Excellent' };
+            }
+            
+            scores.pillar1.maturity = getPillarMaturity(scores.pillar1.percentage);
+            scores.pillar2.maturity = getPillarMaturity(scores.pillar2.percentage);
+            scores.pillar3.maturity = getPillarMaturity(scores.pillar3.percentage);
+            scores.pillar4.maturity = getPillarMaturity(scores.pillar4.percentage);
+            scores.pillar5.maturity = getPillarMaturity(scores.pillar5.percentage);
+            
+            try {
+                // Send to n8n webhook
+                const response = await fetch('https://n8n.reliox.ai/webhook/assessment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Submission failed');
+                }
+                
+                // Show thank you page
+                currentStep = 9;
+                showStep(currentStep);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                // Still show thank you page but log error
+                currentStep = 9;
+                showStep(currentStep);
+            }
+        });
+    </script>
+</body>
+</html>
